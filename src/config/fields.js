@@ -13,6 +13,8 @@ const fields = [
     fieldId: createdBy,
     type: "text",
     fieldLabel: "Created By",
+    placeholder: "",
+    value: "",
     required: false,
     fieldsToActivate: []
   },
@@ -20,6 +22,8 @@ const fields = [
     fieldId: description,
     type: "text",
     fieldLabel: "Description",
+    placeholder: "",
+    value: "",
     required: false,
     fieldsToActivate: []
   },
@@ -27,6 +31,8 @@ const fields = [
     fieldId: severity,
     type: "number",
     fieldLabel: "Severity",
+    placeholder: "",
+    value: null,
     required: false,
     fieldsToActivate: []
   },
@@ -34,6 +40,7 @@ const fields = [
     fieldId: status,
     type: "enum",
     fieldLabel: "Status",
+    placeholder: "",
     required: false,
     enumOptions: [
       {
@@ -49,14 +56,14 @@ const fields = [
   },
   {
     fieldId: cancelledReason,
-    type: "text",
+    type: "enum",
     fieldLabel: "Cancelled Reason",
+    placeholder: "",
     required: false,
     fieldsToActivate: [
       {
-        fieldType: "enum",
         fieldId: "status",
-        enumOptionId: "cancelled"
+        value: "cancelled"
       }
     ],
     enumOptions: [
@@ -74,17 +81,16 @@ const fields = [
     fieldId: cancelledOthersDescription,
     type: "text",
     fieldLabel: "Cancelled Others Description",
+    placeholder: "",
     required: false,
     fieldsToActivate: [
       {
-        fieldType: "enum",
         fieldId: "status",
-        enumOptionId: "cancelled"
+        value: "cancelled"
       },
       {
-        fieldType: "enum",
         fieldId: "cancelledReason",
-        enumOptionId: "others"
+        value: "others"
       }
     ]
   },
@@ -92,12 +98,12 @@ const fields = [
     fieldId: comments,
     type: "text",
     fieldLabel: "Comments",
+    placeholder: "",
     required: false,
     fieldsToActivate: [
       {
-        fieldType: "enum",
         fieldId: "status",
-        enumOptionId: "completed"
+        value: "completed"
       }
     ]
   }
