@@ -23,7 +23,7 @@ class Home extends Component {
     );
   }
   renderSubmittedAlert = () => {
-    return <Alert color="secondary">{"Your form is submitted, please check the console for the details"}</Alert>;
+    return <Alert color="secondary">{"Your form is submitted, please check the browser console for  details"}</Alert>;
   };
   getModelledFormFields = () => {
     return formFields.map(field => {
