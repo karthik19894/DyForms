@@ -1,13 +1,5 @@
 import identifiers from "./identifiers";
-const {
-  createdBy,
-  description,
-  severity,
-  status,
-  cancelledReason,
-  cancelledOthersDescription,
-  comments
-} = identifiers;
+const { createdBy, description, severity, status, cancelledReason, cancelledOthersDescription, comments } = identifiers;
 const fields = [
   {
     fieldId: createdBy,
@@ -15,7 +7,7 @@ const fields = [
     fieldLabel: "Created By",
     placeholder: "",
     value: "",
-    required: false,
+    required: true,
     fieldsToActivate: []
   },
   {

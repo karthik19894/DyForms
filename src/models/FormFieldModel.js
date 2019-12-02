@@ -3,11 +3,11 @@ export default class FormFieldModel {
     this._fieldId = formFieldProps.fieldId;
     this._type = formFieldProps.type;
     this._fieldLabel = formFieldProps.fieldLabel;
-    this._required = formFieldProps.required;
-    this._value = formFieldProps.value;
-    this._placeholder = formFieldProps.placeholder;
-    this._fieldsToActivate = formFieldProps.fieldsToActivate;
-    this._enumOptions = formFieldProps.enumOptions || null;
+    this._required = formFieldProps.required || false;
+    this._value = formFieldProps.value || null;
+    this._placeholder = formFieldProps.placeholder || "";
+    this._fieldsToActivate = formFieldProps.fieldsToActivate || [];
+    this._enumOptions = formFieldProps.enumOptions || [];
   }
   get fieldId() {
     return this._fieldId;
@@ -69,7 +69,6 @@ export default class FormFieldModel {
     return isActive;
   };
   getEnumOptions = () => {
-    console.log(this._type);
     if (!(this._type === "enum")) return null;
     return this._enumOptions.map(option => {
       return {

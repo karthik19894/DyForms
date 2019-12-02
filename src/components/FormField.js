@@ -1,70 +1,49 @@
 import React, { Component } from "react";
 import { FormGroup, Label, Input } from "reactstrap";
+import PropTypes from "prop-types";
 
-export default class FormField extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+class FormField extends Component {
   render() {
-    const { fieldLabel, fieldId } = this.props;
-
+    const { fieldLabel, fieldId, className } = this.props;
     return (
-      <FormGroup>
+      <FormGroup className={`form-field ${className}`}>
         <Label for={fieldId}>{fieldLabel}</Label>
         {this.renderInputBasedOnType()}
       </FormGroup>
     );
   }
   renderInputBasedOnType = () => {
-    const {
-      type,
-      fieldId,
-      required,
-      disabled,
-      placeholder,
-      options
-    } = this.props;
+    const { type, fieldId, required, disabled, placeholder, options } = this.props;
     const onChange = this.handleInputChange;
-    if (this.props.type === "select") {
-      const optionsWithDefaultEmpty = [{ value: "", label: "" }, ...options];
-      return (
-        <Input
-          type={type}
-          name={fieldId}
-          id={fieldId}
-          placeholder={placeholder}
-          required={required}
-          disabled={disabled}
-          onChange={onChange}
-          value={null}
-        >
-          {optionsWithDefaultEmpty.map(option => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </Input>
-      );
-    } else {
-      return (
-        <Input
-          type={type}
-          name={fieldId}
-          id={fieldId}
-          placeholder={placeholder}
-          required={required}
-          disabled={disabled}
-          onChange={onChange}
-        />
-      );
-    }
+    const isSelectTypeInput = type === "select";
+    const optionsWithDefaultEmpty = isSelectTypeInput ? [{ value: "", label: "None" }, ...options] : [];
+    return (
+      <Input
+        type={type}
+        name={fieldId}
+        id={fieldId}
+        placeholder={placeholder}
+        required={required}
+        disabled={disabled}
+        onChange={onChange}
+      >
+        {isSelectTypeInput ? this.renderOptionsList(optionsWithDefaultEmpty) : null}
+      </Input>
+    );
+  };
+  renderOptionsList = options => {
+    return options.map(option => (
+      <option key={option.value} value={option.value}>
+        {option.label}
+      </option>
+    ));
   };
   handleInputChange = e => {
-    const { fieldId } = this.props;
+    const { fieldId, fieldLabel } = this.props;
     if (e.target.value) {
       const selectedField = {
         fieldId: fieldId,
+        fieldLabel: fieldLabel,
         value: e.target.value
       };
       this.props.onChange(selectedField);
@@ -73,3 +52,23 @@ export default class FormField extends Component {
     }
   };
 }
+
+FormField.propTypes = {
+  className: PropTypes.string,
+  fieldId: PropTypes.string.isRequired,
+  fieldLabel: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  disabled: PropTypes.bool,
+  required: PropTypes.bool,
+  placeholder: PropTypes.string,
+  onChange: PropTypes.func.isRequired,
+  onRemoveField: PropTypes.func.isRequired
+};
+FormField.defaultProps = {
+  className: "",
+  disabled: false,
+  required: false,
+  placeholder: ""
+};
+
+export default FormField;
