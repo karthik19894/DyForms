@@ -4,7 +4,7 @@ export default class FormFieldModel {
     this._type = formFieldProps.type;
     this._fieldLabel = formFieldProps.fieldLabel;
     this._required = formFieldProps.required || false;
-    this._value = formFieldProps.value || null;
+    this._value = formFieldProps.value || "";
     this._placeholder = formFieldProps.placeholder || "";
     this._fieldsToActivate = formFieldProps.fieldsToActivate || [];
     this._oneOfTheFieldsToActivate = formFieldProps.oneOfTheFieldsToActivate || [];
@@ -63,7 +63,7 @@ export default class FormFieldModel {
     this._placeholder = placeholder;
   }
   get renderWhenNotActive() {
-    return this._required;
+    return this._renderWhenNotActive;
   }
   set renderWhenNotActive(renderWhenNotActive) {
     this._renderWhenNotActive = renderWhenNotActive;

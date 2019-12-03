@@ -8,17 +8,18 @@ class DyForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      filledFields: []
+      filledFields: [],
+      formFields: this.props.formFields
     };
   }
   componentDidMount() {
-    const { formFields } = this.props;
+    const { formFields } = this.state;
     this.checkAndAppendFieldsFilledWithValuesToState(formFields);
   }
   render() {
     const { className, style } = this.props;
     return (
-      <div className={`dynamic-form ${className}`} style={style}>
+      <div className={`dynamic-form ${className}`} style={style} data-test="dy-form">
         {this.renderFormFields()}
         {this.renderSubmitButton()}
       </div>
@@ -34,20 +35,27 @@ class DyForm extends Component {
   };
   renderFormFields = () => {
     const { formFields } = this.props;
-    let formFieldsList = formFields.map(field => (
-      <FormField
-        key={field.fieldId}
-        fieldId={field.fieldId}
-        type={field.type}
-        placeholder={field.placeholder}
-        fieldLabel={field.fieldLabel}
-        disabled={!field.isFormFieldActive(this.state.filledFields)}
-        required={field.required}
-        options={field.getEnumOptions()}
-        onChange={this.onFormFieldChange}
-        onRemoveField={this.onRemoveField}
-      />
-    ));
+    let formFieldsList = [];
+    for (let field of formFields) {
+      const isFieldActive = field.isFormFieldActive(this.state.filledFields);
+      if (!isFieldActive && !field.renderWhenNotActive) continue;
+      const formField = (
+        <FormField
+          key={field.fieldId}
+          fieldId={field.fieldId}
+          type={field.type}
+          placeholder={field.placeholder}
+          fieldLabel={field.fieldLabel}
+          disabled={!isFieldActive}
+          required={field.required}
+          options={field.getEnumOptions()}
+          onChange={this.onFormFieldChange}
+          onRemoveField={this.onRemoveField}
+          value={field.value}
+        />
+      );
+      formFieldsList.push(formField);
+    }
     return formFieldsList;
   };
   renderSubmitButton = () => {
@@ -71,16 +79,31 @@ class DyForm extends Component {
     return true;
   };
   onFormFieldChange = selectedOption => {
-    const filledFields = [...this.state.filledFields];
-    let existingFieldIndex = filledFields.findIndex(field => field.fieldId === selectedOption.fieldId);
-    if (existingFieldIndex > -1) {
-      filledFields.splice(existingFieldIndex, 1, selectedOption);
-    } else {
-      filledFields.push(selectedOption);
+    const formFields = [...this.state.formFields];
+    const indexOfFieldToUpdate = formFields.findIndex(field => field.fieldId === selectedOption.fieldId);
+    const fieldToUpdate = formFields[indexOfFieldToUpdate];
+    fieldToUpdate.value = selectedOption.value;
+    var callback = this.updateCurrentFormValues.bind(this, selectedOption);
+    this.setState(
+      {
+        formFields
+      },
+      callback
+    );
+  };
+  updateCurrentFormValues = selectedOption => {
+    if (selectedOption.value) {
+      const filledFields = [...this.state.filledFields];
+      let existingFieldIndex = filledFields.findIndex(field => field.fieldId === selectedOption.fieldId);
+      if (existingFieldIndex > -1) {
+        filledFields.splice(existingFieldIndex, 1, selectedOption);
+      } else {
+        filledFields.push(selectedOption);
+      }
+      this.setState({
+        filledFields
+      });
     }
-    this.setState({
-      filledFields
-    });
   };
   onRemoveField = fieldToRemove => {
     const filledFields = [...this.state.filledFields];

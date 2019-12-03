@@ -13,10 +13,12 @@ class Home extends Component {
   }
   render() {
     return (
-      <div className="home">
+      <div className="home" data-test="home">
         <Container>
           {this.state.showSubmittedAlert && this.renderSubmittedAlert()}
-          <h1 className="heading mb-2">DyForms</h1>
+          <h1 className="heading mb-2" data-test="header">
+            DyForms
+          </h1>
           <DyForm
             formFields={this.getModelledFormFields()}
             onFormSubmit={this.onFormSubmit}

@@ -9,7 +9,7 @@ const fields = [
     type: Types.TEXT,
     fieldLabel: "Created By",
     placeholder: "",
-    value: "",
+    value: "karthik",
     required: true,
     fieldsToActivate: [],
     oneOfTheFieldsToActivate: [],
