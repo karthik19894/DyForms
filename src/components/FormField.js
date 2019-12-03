@@ -39,12 +39,13 @@ class FormField extends Component {
     ));
   };
   handleInputChange = e => {
-    const { fieldId, fieldLabel } = this.props;
+    const { fieldId, fieldLabel, type } = this.props;
+    const isSelectTypeInput = type === "select";
     if (e.target.value) {
       const selectedField = {
         fieldId: fieldId,
         fieldLabel: fieldLabel,
-        value: e.target.value
+        value: isSelectTypeInput ? parseInt(e.target.value) : e.target.value
       };
       this.props.onChange(selectedField);
     } else {

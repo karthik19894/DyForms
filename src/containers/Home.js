@@ -17,7 +17,11 @@ class Home extends Component {
         <Container>
           {this.state.showSubmittedAlert && this.renderSubmittedAlert()}
           <h1 className="heading mb-2">DyForms</h1>
-          <DyForm formFields={this.getModelledFormFields()} onFormSubmit={this.onFormSubmit} />
+          <DyForm
+            formFields={this.getModelledFormFields()}
+            onFormSubmit={this.onFormSubmit}
+            style={{ textAlign: "left", maxWidth: 500, margin: "0 auto" }}
+          />
         </Container>
       </div>
     );

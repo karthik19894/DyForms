@@ -7,7 +7,9 @@ export default class FormFieldModel {
     this._value = formFieldProps.value || null;
     this._placeholder = formFieldProps.placeholder || "";
     this._fieldsToActivate = formFieldProps.fieldsToActivate || [];
-    this._enumOptions = formFieldProps.enumOptions || [];
+    this._oneOfTheFieldsToActivate = formFieldProps.oneOfTheFieldsToActivate || [];
+    this._options = formFieldProps.options || [];
+    this._renderWhenNotActive = formFieldProps.renderWhenNotActive === false ? false : true;
   }
   get fieldId() {
     return this._fieldId;
@@ -48,29 +50,64 @@ export default class FormFieldModel {
   set fieldsToActivate(fieldsToActivate) {
     this._fieldsToActivate = fieldsToActivate;
   }
+  get oneOfTheFieldsToActivate() {
+    return this._oneOfTheFieldsToActivate;
+  }
+  set oneOfTheFieldsToActivate(oneOfTheFieldsToActivate) {
+    this._oneOfTheFieldsToActivate = oneOfTheFieldsToActivate;
+  }
   get placeholder() {
     return this._placeholder;
   }
   set placeholder(placeholder) {
     this._placeholder = placeholder;
   }
+  get renderWhenNotActive() {
+    return this._required;
+  }
+  set renderWhenNotActive(renderWhenNotActive) {
+    this._renderWhenNotActive = renderWhenNotActive;
+  }
   isFormFieldActive = fieldsFilled => {
-    const fieldsRequiredToActive = this.fieldsToActivate;
+    if (this.fieldsToActivate.length > 0) {
+      return this.isAllRequiredFieldsFilled(fieldsFilled);
+    } else if (this.oneOfTheFieldsToActivate.length > 0) {
+      return this.isAtleastOneOfTheRequiredFieldsFilled(fieldsFilled);
+    } else {
+      return true;
+    }
+  };
+  isAllRequiredFieldsFilled = fieldsFilled => {
     let isActive = true;
+    const fieldsRequiredToActive = this.fieldsToActivate;
     for (let fieldRequired of fieldsRequiredToActive) {
-      if (
-        !fieldsFilled.some(filledField => {
-          return filledField.value === fieldRequired.value;
-        })
-      ) {
+      const filledFieldsHasRequired = fieldsFilled.some(filledField => {
+        return filledField.fieldId === fieldRequired.fieldId && filledField.value === fieldRequired.value;
+      });
+      if (!filledFieldsHasRequired) {
         return false;
+      }
+    }
+    return isActive;
+  };
+  isAtleastOneOfTheRequiredFieldsFilled = fieldsFilled => {
+    let isActive = true;
+    const fieldsToCheck = this.oneOfTheFieldsToActivate;
+    for (let fieldToCheck of fieldsToCheck) {
+      const filledFieldsHasRequired = fieldsFilled.some(filledField => {
+        return filledField.fieldId === fieldToCheck.fieldId && filledField.value === fieldToCheck.value;
+      });
+      if (!filledFieldsHasRequired) {
+        isActive = false;
+      } else {
+        return true;
       }
     }
     return isActive;
   };
   getEnumOptions = () => {
     if (!(this._type === "enum")) return null;
-    return this._enumOptions.map(option => {
+    return this._options.map(option => {
       return {
         value: option.optionId,
         label: option.optionLabel

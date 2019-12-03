@@ -1,4 +1,6 @@
 import identifiers from "./identifiers";
+import { status as statusEnum } from "../enums/status";
+import { cancelledReason as cancelledReasonEnum } from "../enums/cancelledReason";
 const { createdBy, description, severity, status, cancelledReason, cancelledOthersDescription, comments } = identifiers;
 const fields = [
   {
@@ -8,7 +10,9 @@ const fields = [
     placeholder: "",
     value: "",
     required: true,
-    fieldsToActivate: []
+    fieldsToActivate: [],
+    oneOfTheFieldsToActivate: [],
+    renderWhenNotActive: true
   },
   {
     fieldId: description,
@@ -17,7 +21,9 @@ const fields = [
     placeholder: "",
     value: "",
     required: false,
-    fieldsToActivate: []
+    fieldsToActivate: [],
+    oneOfTheFieldsToActivate: [],
+    renderWhenNotActive: true
   },
   {
     fieldId: severity,
@@ -26,7 +32,9 @@ const fields = [
     placeholder: "",
     value: null,
     required: false,
-    fieldsToActivate: []
+    fieldsToActivate: [],
+    oneOfTheFieldsToActivate: [],
+    renderWhenNotActive: true
   },
   {
     fieldId: status,
@@ -34,17 +42,19 @@ const fields = [
     fieldLabel: "Status",
     placeholder: "",
     required: false,
-    enumOptions: [
+    options: [
       {
-        optionId: "cancelled",
+        optionId: statusEnum.CANCELLED,
         optionLabel: "CANCELLED"
       },
       {
-        optionId: "completed",
+        optionId: statusEnum.COMPLETED,
         optionLabel: "COMPLETED"
       }
     ],
-    fieldsToActivate: []
+    fieldsToActivate: [],
+    oneOfTheFieldsToActivate: [],
+    renderWhenNotActive: true
   },
   {
     fieldId: cancelledReason,
@@ -54,20 +64,22 @@ const fields = [
     required: false,
     fieldsToActivate: [
       {
-        fieldId: "status",
-        value: "cancelled"
+        fieldId: status,
+        value: statusEnum.CANCELLED
       }
     ],
-    enumOptions: [
+    oneOfTheFieldsToActivate: [],
+    options: [
       {
-        optionId: "others",
+        optionId: cancelledReasonEnum.OTHERS,
         optionLabel: "OTHERS"
       },
       {
-        optionId: "endUser",
+        optionId: cancelledReasonEnum.ENDUSER,
         optionLabel: "ENDUSER"
       }
-    ]
+    ],
+    renderWhenNotActive: true
   },
   {
     fieldId: cancelledOthersDescription,
@@ -77,14 +89,16 @@ const fields = [
     required: false,
     fieldsToActivate: [
       {
-        fieldId: "status",
-        value: "cancelled"
+        fieldId: status,
+        value: statusEnum.CANCELLED
       },
       {
-        fieldId: "cancelledReason",
-        value: "others"
+        fieldId: cancelledReason,
+        value: cancelledReasonEnum.OTHERS
       }
-    ]
+    ],
+    oneOfTheFieldsToActivate: [],
+    renderWhenNotActive: true
   },
   {
     fieldId: comments,
@@ -94,10 +108,12 @@ const fields = [
     required: false,
     fieldsToActivate: [
       {
-        fieldId: "status",
-        value: "completed"
+        fieldId: status,
+        value: statusEnum.COMPLETED
       }
-    ]
+    ],
+    oneOfTheFieldsToActivate: [],
+    renderWhenNotActive: true
   }
 ];
 

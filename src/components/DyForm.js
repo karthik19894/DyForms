@@ -11,15 +11,27 @@ class DyForm extends Component {
       filledFields: []
     };
   }
+  componentDidMount() {
+    const { formFields } = this.props;
+    this.checkAndAppendFieldsFilledWithValuesToState(formFields);
+  }
   render() {
-    const { className } = this.props;
+    const { className, style } = this.props;
     return (
-      <div className={`dynamic-form ${className}`} style={{ textAlign: "left", maxWidth: 500, margin: "0 auto" }}>
+      <div className={`dynamic-form ${className}`} style={style}>
         {this.renderFormFields()}
         {this.renderSubmitButton()}
       </div>
     );
   }
+  checkAndAppendFieldsFilledWithValuesToState = fields => {
+    const fieldsFilledWithValues = fields.filter(field => Boolean(field.value));
+    if (fieldsFilledWithValues.length > 0) {
+      this.setState({
+        filledFields: fieldsFilledWithValues
+      });
+    }
+  };
   renderFormFields = () => {
     const { formFields } = this.props;
     let formFieldsList = formFields.map(field => (
@@ -88,10 +100,12 @@ class DyForm extends Component {
 
 DyForm.propTypes = {
   className: PropTypes.string,
-  formFields: PropTypes.arrayOf(PropTypes.instanceOf(FormFieldModel)).isRequired
+  formFields: PropTypes.arrayOf(PropTypes.instanceOf(FormFieldModel)).isRequired,
+  style: PropTypes.object
 };
 DyForm.defaultProps = {
-  className: ""
+  className: "",
+  style: {}
 };
 
 export default DyForm;
