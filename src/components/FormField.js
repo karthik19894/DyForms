@@ -7,7 +7,7 @@ class FormField extends Component {
     const { fieldLabel, fieldId, className, required } = this.props;
     const requiredCls = required ? "required" : "";
     return (
-      <FormGroup className={`form-field ${className} ${requiredCls}`}>
+      <FormGroup className={`form-field ${className} ${requiredCls}`} data-test="form-field">
         <Label className="control-label" for={fieldId}>
           {fieldLabel}
         </Label>
@@ -30,6 +30,7 @@ class FormField extends Component {
         disabled={disabled}
         onChange={onChange}
         value={value}
+        data-test="input"
       >
         {isSelectTypeInput ? this.renderOptionsList(optionsWithDefaultEmpty) : null}
       </Input>

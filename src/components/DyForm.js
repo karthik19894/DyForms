@@ -61,14 +61,20 @@ class DyForm extends Component {
   renderSubmitButton = () => {
     return (
       <FormGroup className={"submit-btn-container text-center"}>
-        <Button size="lg" color="primary" onClick={this.onFormSubmit} disabled={!this.canSubmit()}>
+        <Button
+          size="lg"
+          color="primary"
+          onClick={this.onFormSubmit}
+          disabled={!this.canSubmit()}
+          data-test="submit-btn"
+        >
           Submit
         </Button>
       </FormGroup>
     );
   };
   canSubmit = () => {
-    let requiredFieldIds = this.props.formFields.filter(field => field.required).map(f => f.fieldId);
+    let requiredFieldIds = this.state.formFields.filter(field => field.required).map(field => field.fieldId);
     if (requiredFieldIds.length === 0) return true;
     else {
       const filledFieldIds = this.state.filledFields.map(field => field.fieldId);
@@ -83,7 +89,7 @@ class DyForm extends Component {
     const indexOfFieldToUpdate = formFields.findIndex(field => field.fieldId === selectedOption.fieldId);
     const fieldToUpdate = formFields[indexOfFieldToUpdate];
     fieldToUpdate.value = selectedOption.value;
-    var callback = this.updateCurrentFormValues.bind(this, selectedOption);
+    const callback = this.updateCurrentFormValues.bind(this, selectedOption);
     this.setState(
       {
         formFields
