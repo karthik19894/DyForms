@@ -1,11 +1,12 @@
 import identifiers from "./identifiers";
-import { status as statusEnum } from "../enums/status";
-import { cancelledReason as cancelledReasonEnum } from "../enums/cancelledReason";
+import { Status as StatusEnum } from "../enums/Status";
+import { CancelledReason as CancelledReasonEnum } from "../enums/CancelledReason";
+import Types from "../enums/Types";
 const { createdBy, description, severity, status, cancelledReason, cancelledOthersDescription, comments } = identifiers;
 const fields = [
   {
     fieldId: createdBy,
-    type: "text",
+    type: Types.TEXT,
     fieldLabel: "Created By",
     placeholder: "",
     value: "",
@@ -16,7 +17,7 @@ const fields = [
   },
   {
     fieldId: description,
-    type: "text",
+    type: Types.TEXT,
     fieldLabel: "Description",
     placeholder: "",
     value: "",
@@ -27,7 +28,7 @@ const fields = [
   },
   {
     fieldId: severity,
-    type: "number",
+    type: Types.NUMBER,
     fieldLabel: "Severity",
     placeholder: "",
     value: null,
@@ -38,17 +39,17 @@ const fields = [
   },
   {
     fieldId: status,
-    type: "enum",
+    type: Types.ENUM,
     fieldLabel: "Status",
     placeholder: "",
     required: false,
     options: [
       {
-        optionId: statusEnum.CANCELLED,
+        optionId: StatusEnum.CANCELLED,
         optionLabel: "CANCELLED"
       },
       {
-        optionId: statusEnum.COMPLETED,
+        optionId: StatusEnum.COMPLETED,
         optionLabel: "COMPLETED"
       }
     ],
@@ -58,24 +59,24 @@ const fields = [
   },
   {
     fieldId: cancelledReason,
-    type: "enum",
+    type: Types.ENUM,
     fieldLabel: "Cancelled Reason",
     placeholder: "",
     required: false,
     fieldsToActivate: [
       {
         fieldId: status,
-        value: statusEnum.CANCELLED
+        value: StatusEnum.CANCELLED
       }
     ],
     oneOfTheFieldsToActivate: [],
     options: [
       {
-        optionId: cancelledReasonEnum.OTHERS,
+        optionId: CancelledReasonEnum.OTHERS,
         optionLabel: "OTHERS"
       },
       {
-        optionId: cancelledReasonEnum.ENDUSER,
+        optionId: CancelledReasonEnum.ENDUSER,
         optionLabel: "ENDUSER"
       }
     ],
@@ -83,18 +84,18 @@ const fields = [
   },
   {
     fieldId: cancelledOthersDescription,
-    type: "text",
+    type: Types.TEXT,
     fieldLabel: "Cancelled Others Description",
     placeholder: "",
     required: false,
     fieldsToActivate: [
       {
         fieldId: status,
-        value: statusEnum.CANCELLED
+        value: StatusEnum.CANCELLED
       },
       {
         fieldId: cancelledReason,
-        value: cancelledReasonEnum.OTHERS
+        value: CancelledReasonEnum.OTHERS
       }
     ],
     oneOfTheFieldsToActivate: [],
@@ -102,14 +103,14 @@ const fields = [
   },
   {
     fieldId: comments,
-    type: "text",
+    type: Types.TEXT,
     fieldLabel: "Comments",
     placeholder: "",
     required: false,
     fieldsToActivate: [
       {
         fieldId: status,
-        value: statusEnum.COMPLETED
+        value: StatusEnum.COMPLETED
       }
     ],
     oneOfTheFieldsToActivate: [],
