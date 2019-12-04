@@ -86,7 +86,7 @@ const fields = [
       }
     ],
     renderWhenNotActive: true,
-    multiple: true
+    multiple: false
   },
   {
     fieldId: cancelledOthersDescription,

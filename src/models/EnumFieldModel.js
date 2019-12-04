@@ -13,14 +13,17 @@ export default class EnumFieldModel extends FormFieldModel {
     this._multiple = multiple;
   }
   get options() {
+    return this._options;
+  }
+  set options(options) {
+    this._options = options;
+  }
+  getOptionsForSelect = () => {
     return this._options.map(option => {
       return {
         value: option.optionId,
         label: option.optionLabel
       };
     });
-  }
-  set options(options) {
-    this._options = options;
-  }
+  };
 }

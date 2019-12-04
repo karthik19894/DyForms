@@ -62,7 +62,7 @@ class DyForm extends Component {
     const { formFields } = this.state;
     let formFieldsList = [];
     for (let field of formFields) {
-      const isFieldActive = field.isFormFieldActive(this.state.filledFields) || true;
+      const isFieldActive = field.isFormFieldActive(this.state.filledFields);
       if (!isFieldActive && !field.renderWhenNotActive) continue;
       const formField = this.getFormFieldRendererBasedOnType(field);
       formFieldsList.push(formField);
@@ -149,7 +149,7 @@ class DyForm extends Component {
           <TextFormField
             key={field.fieldId}
             textFormField={textField}
-            disabled={textField.isFormFieldActive(filledFields)}
+            disabled={!textField.isFormFieldActive(filledFields)}
             {...commonProps}
           />
         );
@@ -159,7 +159,7 @@ class DyForm extends Component {
           <EnumFormField
             key={field.fieldId}
             enumFormField={enumField}
-            disabled={enumField.isFormFieldActive(filledFields)}
+            disabled={!enumField.isFormFieldActive(filledFields)}
             {...commonProps}
           />
         );
@@ -169,7 +169,7 @@ class DyForm extends Component {
           <NumericFormField
             key={field.fieldId}
             numericFormField={numField}
-            disabled={numField.isFormFieldActive(filledFields)}
+            disabled={!numField.isFormFieldActive(filledFields)}
             {...commonProps}
           />
         );
@@ -179,7 +179,7 @@ class DyForm extends Component {
           <TextFormField
             key={field.fieldId}
             textFormField={defaultTextField}
-            disabled={defaultTextField.isFormFieldActive(filledFields)}
+            disabled={!defaultTextField.isFormFieldActive(filledFields)}
             {...commonProps}
           />
         );

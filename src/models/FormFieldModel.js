@@ -17,9 +17,6 @@ export default class FormFieldModel {
     this.fieldId = id;
   }
   get type() {
-    if (this._type === "enum") {
-      return "select";
-    }
     return this._type;
   }
   set type(type) {

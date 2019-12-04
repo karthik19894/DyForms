@@ -5,37 +5,30 @@ import TextFormFieldModel from "../models/TextFormFieldModel";
 
 class TextFormField extends Component {
   render() {
-    const { textFormField } = this.props;
-    const { fieldLabel, fieldId, className, required } = textFormField;
+    const { textFormField, disabled } = this.props;
+    const { fieldLabel, fieldId, className, required, value, placeholder, type } = textFormField;
     const requiredCls = required ? "required" : "";
     return (
       <FormGroup className={`form-field ${className} ${requiredCls}`} data-test="form-field">
         <Label className="control-label" for={fieldId}>
           {fieldLabel}
         </Label>
-        {this.renderInputBasedOnType()}
+        <Input
+          type={type}
+          name={fieldId}
+          id={fieldId}
+          placeholder={placeholder}
+          required={required}
+          disabled={disabled}
+          onChange={this.handleInputChange}
+          value={value}
+          data-test="input"
+        />
       </FormGroup>
     );
   }
-  renderInputBasedOnType = () => {
-    const { type, fieldId, required, disabled, placeholder, value } = this.props;
-    const onChange = this.handleInputChange;
-    return (
-      <Input
-        type={type}
-        name={fieldId}
-        id={fieldId}
-        placeholder={placeholder}
-        required={required}
-        disabled={disabled}
-        onChange={onChange}
-        value={value}
-        data-test="input"
-      />
-    );
-  };
   handleInputChange = e => {
-    const { fieldId, fieldLabel } = this.props;
+    const { fieldId, fieldLabel } = this.props.textFormField;
     const selectedField = {
       fieldId: fieldId,
       fieldLabel: fieldLabel,

@@ -6,7 +6,8 @@ import EnumFieldModel from "../models/EnumFieldModel";
 class EnumFormField extends Component {
   render() {
     const { enumFormField, disabled } = this.props;
-    const { fieldLabel, fieldId, className, required, options, type, placeholder, value } = enumFormField;
+    const { fieldLabel, fieldId, className, required, placeholder, value } = enumFormField;
+    const options = enumFormField.getOptionsForSelect();
     const requiredCls = required ? "required" : "";
     const optionsWithDefaultEmpty = options.length > 0 ? [{ value: "", label: "None" }, ...options] : [];
     return (
@@ -15,7 +16,7 @@ class EnumFormField extends Component {
           {fieldLabel}
         </Label>
         <Input
-          type={type}
+          type={"select"}
           name={fieldId}
           id={fieldId}
           placeholder={placeholder}
@@ -38,7 +39,7 @@ class EnumFormField extends Component {
     ));
   };
   handleInputChange = e => {
-    const { fieldId, fieldLabel } = this.props;
+    const { fieldId, fieldLabel } = this.props.enumFormField;
     const selectedField = {
       fieldId: fieldId,
       fieldLabel: fieldLabel,
