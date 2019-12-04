@@ -13,7 +13,8 @@ const fields = [
     required: true,
     fieldsToActivate: [],
     oneOfTheFieldsToActivate: [],
-    renderWhenNotActive: true
+    renderWhenNotActive: true,
+    multiple: false
   },
   {
     fieldId: description,
@@ -24,7 +25,8 @@ const fields = [
     required: false,
     fieldsToActivate: [],
     oneOfTheFieldsToActivate: [],
-    renderWhenNotActive: true
+    renderWhenNotActive: true,
+    multiple: false
   },
   {
     fieldId: severity,
@@ -35,7 +37,8 @@ const fields = [
     required: false,
     fieldsToActivate: [],
     oneOfTheFieldsToActivate: [],
-    renderWhenNotActive: true
+    renderWhenNotActive: true,
+    multiple: false
   },
   {
     fieldId: status,
@@ -55,11 +58,13 @@ const fields = [
     ],
     fieldsToActivate: [],
     oneOfTheFieldsToActivate: [],
-    renderWhenNotActive: true
+    renderWhenNotActive: true,
+    multiple: false
   },
   {
     fieldId: cancelledReason,
     type: Types.ENUM,
+    value: [],
     fieldLabel: "Cancelled Reason",
     placeholder: "",
     required: false,
@@ -80,7 +85,8 @@ const fields = [
         optionLabel: "ENDUSER"
       }
     ],
-    renderWhenNotActive: true
+    renderWhenNotActive: true,
+    multiple: true
   },
   {
     fieldId: cancelledOthersDescription,
@@ -99,7 +105,8 @@ const fields = [
       }
     ],
     oneOfTheFieldsToActivate: [],
-    renderWhenNotActive: true
+    renderWhenNotActive: true,
+    multiple: false
   },
   {
     fieldId: comments,
@@ -114,7 +121,8 @@ const fields = [
       }
     ],
     oneOfTheFieldsToActivate: [],
-    renderWhenNotActive: true
+    renderWhenNotActive: true,
+    multiple: false
   }
 ];
 

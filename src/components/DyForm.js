@@ -1,20 +1,25 @@
 import React, { Component } from "react";
-import FormField from "./FormField";
+import TextFormField from "./TextFormField";
+import EnumFormField from "./EnumFormField";
+import NumericFormField from "./NumericFormField";
 import { FormGroup, Button } from "reactstrap";
 import PropTypes from "prop-types";
-import FormFieldModel from "../models/FormFieldModel";
+import TextFormFieldModel from "../models/TextFormFieldModel";
+import Types from "../enums/Types";
+import EnumFieldModel from "../models/EnumFieldModel";
+import NumericFieldModel from "../models/NumericFieldModel";
 
 class DyForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
       filledFields: [],
-      formFields: this.props.formFields
+      formFields: this.getModelledFields(this.props.formFields)
     };
   }
   componentDidMount() {
-    const { formFields } = this.state;
-    this.checkAndAppendFieldsFilledWithValuesToState(formFields);
+    const modelledFields = this.state.formFields;
+    this.checkAndAppendFieldsFilledWithValuesToState(modelledFields);
   }
   render() {
     const { className, style } = this.props;
@@ -25,6 +30,26 @@ class DyForm extends Component {
       </div>
     );
   }
+  getModelledFields = formFields => {
+    const modelledFields = [];
+    formFields.forEach(field => {
+      const FieldModel = this.getModelConstructorBasedOnType(field.type);
+      modelledFields.push(new FieldModel(field));
+    });
+    return modelledFields;
+  };
+  getModelConstructorBasedOnType = type => {
+    switch (type) {
+      case Types.TEXT:
+        return TextFormFieldModel;
+      case Types.ENUM:
+        return EnumFieldModel;
+      case Types.NUMBER:
+        return NumericFieldModel;
+      default:
+        return TextFormFieldModel;
+    }
+  };
   checkAndAppendFieldsFilledWithValuesToState = fields => {
     const fieldsFilledWithValues = fields.filter(field => Boolean(field.value));
     if (fieldsFilledWithValues.length > 0) {
@@ -34,26 +59,12 @@ class DyForm extends Component {
     }
   };
   renderFormFields = () => {
-    const { formFields } = this.props;
+    const { formFields } = this.state;
     let formFieldsList = [];
     for (let field of formFields) {
-      const isFieldActive = field.isFormFieldActive(this.state.filledFields);
+      const isFieldActive = field.isFormFieldActive(this.state.filledFields) || true;
       if (!isFieldActive && !field.renderWhenNotActive) continue;
-      const formField = (
-        <FormField
-          key={field.fieldId}
-          fieldId={field.fieldId}
-          type={field.type}
-          placeholder={field.placeholder}
-          fieldLabel={field.fieldLabel}
-          disabled={!isFieldActive}
-          required={field.required}
-          options={field.getEnumOptions()}
-          onChange={this.onFormFieldChange}
-          onRemoveField={this.onRemoveField}
-          value={field.value}
-        />
-      );
+      const formField = this.getFormFieldRendererBasedOnType(field);
       formFieldsList.push(formField);
     }
     return formFieldsList;
@@ -125,11 +136,60 @@ class DyForm extends Component {
     e.preventDefault();
     this.props.onFormSubmit(this.state.filledFields);
   };
+  getFormFieldRendererBasedOnType = field => {
+    const { filledFields } = this.state;
+    const commonProps = {
+      onChange: this.onFormFieldChange,
+      onRemoveField: this.onRemoveField
+    };
+    switch (field.type) {
+      case Types.TEXT:
+        const textField = new TextFormFieldModel(field);
+        return (
+          <TextFormField
+            key={field.fieldId}
+            textFormField={textField}
+            disabled={textField.isFormFieldActive(filledFields)}
+            {...commonProps}
+          />
+        );
+      case Types.ENUM:
+        const enumField = new EnumFieldModel(field);
+        return (
+          <EnumFormField
+            key={field.fieldId}
+            enumFormField={enumField}
+            disabled={enumField.isFormFieldActive(filledFields)}
+            {...commonProps}
+          />
+        );
+      case Types.NUMBER:
+        const numField = new NumericFieldModel(field);
+        return (
+          <NumericFormField
+            key={field.fieldId}
+            numericFormField={numField}
+            disabled={numField.isFormFieldActive(filledFields)}
+            {...commonProps}
+          />
+        );
+      default:
+        const defaultTextField = new TextFormFieldModel(field);
+        return (
+          <TextFormField
+            key={field.fieldId}
+            textFormField={defaultTextField}
+            disabled={defaultTextField.isFormFieldActive(filledFields)}
+            {...commonProps}
+          />
+        );
+    }
+  };
 }
 
 DyForm.propTypes = {
   className: PropTypes.string,
-  formFields: PropTypes.arrayOf(PropTypes.instanceOf(FormFieldModel)).isRequired,
+  formFields: PropTypes.arrayOf(PropTypes.object).isRequired,
   style: PropTypes.object
 };
 DyForm.defaultProps = {

@@ -8,7 +8,6 @@ export default class FormFieldModel {
     this._placeholder = formFieldProps.placeholder || "";
     this._fieldsToActivate = formFieldProps.fieldsToActivate || [];
     this._oneOfTheFieldsToActivate = formFieldProps.oneOfTheFieldsToActivate || [];
-    this._options = formFieldProps.options || [];
     this._renderWhenNotActive = formFieldProps.renderWhenNotActive === false ? false : true;
   }
   get fieldId() {
@@ -68,6 +67,7 @@ export default class FormFieldModel {
   set renderWhenNotActive(renderWhenNotActive) {
     this._renderWhenNotActive = renderWhenNotActive;
   }
+
   isFormFieldActive = fieldsFilled => {
     if (this.fieldsToActivate.length > 0) {
       return this.isAllRequiredFieldsFilled(fieldsFilled);
@@ -104,14 +104,5 @@ export default class FormFieldModel {
       }
     }
     return isActive;
-  };
-  getEnumOptions = () => {
-    if (!(this._type === "enum")) return null;
-    return this._options.map(option => {
-      return {
-        value: option.optionId,
-        label: option.optionLabel
-      };
-    });
   };
 }

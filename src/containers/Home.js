@@ -20,7 +20,7 @@ class Home extends Component {
             DyForms
           </h1>
           <DyForm
-            formFields={this.getModelledFormFields()}
+            formFields={formFields}
             onFormSubmit={this.onFormSubmit}
             style={{ textAlign: "left", maxWidth: 500, margin: "0 auto" }}
           />
