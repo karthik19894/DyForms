@@ -9,12 +9,13 @@ class EnumFormField extends Component {
   };
   render() {
     const { enumFormField, disabled, className } = this.props;
-    const { fieldLabel, fieldId, required, placeholder, multiple } = enumFormField;
+    const { fieldLabel, fieldId, required, placeholder, multiple, value } = enumFormField;
     const options = enumFormField.getOptionsForSelect();
     const requiredCls = required ? "required" : "";
     const optionsWithDefaultEmpty = options.length > 0 ? [{ value: "", label: "None" }, ...options] : [];
     const optionsToRender = multiple ? options : optionsWithDefaultEmpty;
     const onChange = multiple ? this.handleMultipleInputsChange : this.handleInputChange;
+    const valueInForm = multiple ? this.state.fieldValues : value;
     return (
       <FormGroup className={`form-field enum-form-field ${className} ${requiredCls}`} data-test="enum-form-field">
         <Label className="control-label" for={fieldId}>
@@ -28,7 +29,7 @@ class EnumFormField extends Component {
           required={required}
           disabled={disabled}
           onChange={onChange}
-          value={this.state.fieldValues}
+          value={valueInForm}
           data-test="input"
           multiple={multiple}
         >
