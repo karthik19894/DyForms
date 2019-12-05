@@ -4,10 +4,8 @@ import EnumFormField from "./EnumFormField";
 import NumericFormField from "./NumericFormField";
 import { FormGroup, Button } from "reactstrap";
 import PropTypes from "prop-types";
-import TextFormFieldModel from "../models/TextFormFieldModel";
 import Types from "../enums/Types";
-import EnumFieldModel from "../models/EnumFieldModel";
-import NumericFieldModel from "../models/NumericFieldModel";
+import { FormFieldModelCreator } from "../models/ModelCreator";
 
 class DyForm extends Component {
   constructor(props) {
@@ -33,23 +31,11 @@ class DyForm extends Component {
   getModelledFields = formFields => {
     const modelledFields = [];
     formFields.forEach(field => {
-      const FieldModel = this.getModelConstructorBasedOnType(field.type);
-      modelledFields.push(new FieldModel(field));
+      modelledFields.push(FormFieldModelCreator(field));
     });
     return modelledFields;
   };
-  getModelConstructorBasedOnType = type => {
-    switch (type) {
-      case Types.TEXT:
-        return TextFormFieldModel;
-      case Types.ENUM:
-        return EnumFieldModel;
-      case Types.NUMBER:
-        return NumericFieldModel;
-      default:
-        return TextFormFieldModel;
-    }
-  };
+
   checkAndAppendFieldsFilledWithValuesToState = fields => {
     const fieldsFilledWithValues = fields.filter(field => Boolean(field.value));
     if (fieldsFilledWithValues.length > 0) {
@@ -79,7 +65,7 @@ class DyForm extends Component {
           disabled={!this.canSubmit()}
           data-test="submit-btn"
         >
-          Submit
+          {"Submit"}
         </Button>
       </FormGroup>
     );
@@ -96,11 +82,10 @@ class DyForm extends Component {
     return true;
   };
   onFormFieldChange = selectedOption => {
-    const formFields = [...this.state.formFields];
-    const indexOfFieldToUpdate = formFields.findIndex(field => field.fieldId === selectedOption.fieldId);
-    const fieldToUpdate = formFields[indexOfFieldToUpdate];
+    const formFields = [].concat(this.state.formFields);
+    const fieldToUpdate = formFields.find(field => field.fieldId === selectedOption.fieldId);
     fieldToUpdate.value = selectedOption.value;
-    const callback = this.updateCurrentFormValues.bind(this, selectedOption);
+    const callback = this.updateFilledFormFields.bind(this, selectedOption);
     this.setState(
       {
         formFields
@@ -108,19 +93,23 @@ class DyForm extends Component {
       callback
     );
   };
-  updateCurrentFormValues = selectedOption => {
+  updateFilledFormFields = selectedOption => {
+    const filledFields = [...this.state.filledFields];
     if (selectedOption.value) {
-      const filledFields = [...this.state.filledFields];
       let existingFieldIndex = filledFields.findIndex(field => field.fieldId === selectedOption.fieldId);
       if (existingFieldIndex > -1) {
         filledFields.splice(existingFieldIndex, 1, selectedOption);
       } else {
         filledFields.push(selectedOption);
       }
-      this.setState({
-        filledFields
-      });
     }
+    const disabledFieldIds = this.state.formFields
+      .filter(field => !field.isFormFieldActive(filledFields))
+      .map(field => field.fieldId);
+    const filledFieldsFilteredOfDisabled = filledFields.filter(field => !disabledFieldIds.includes(field.fieldId));
+    this.setState({
+      filledFields: filledFieldsFilteredOfDisabled
+    });
   };
   onRemoveField = fieldToRemove => {
     const filledFields = [...this.state.filledFields];
@@ -142,44 +131,41 @@ class DyForm extends Component {
       onChange: this.onFormFieldChange,
       onRemoveField: this.onRemoveField
     };
-    switch (field.type) {
+    const fieldObj = FormFieldModelCreator(field);
+    switch (fieldObj.type) {
       case Types.TEXT:
-        const textField = new TextFormFieldModel(field);
         return (
           <TextFormField
-            key={field.fieldId}
-            textFormField={textField}
-            disabled={!textField.isFormFieldActive(filledFields)}
+            key={fieldObj.fieldId}
+            textFormField={fieldObj}
+            disabled={!fieldObj.isFormFieldActive(filledFields)}
             {...commonProps}
           />
         );
       case Types.ENUM:
-        const enumField = new EnumFieldModel(field);
         return (
           <EnumFormField
-            key={field.fieldId}
-            enumFormField={enumField}
-            disabled={!enumField.isFormFieldActive(filledFields)}
+            key={fieldObj.fieldId}
+            enumFormField={fieldObj}
+            disabled={!fieldObj.isFormFieldActive(filledFields)}
             {...commonProps}
           />
         );
       case Types.NUMBER:
-        const numField = new NumericFieldModel(field);
         return (
           <NumericFormField
-            key={field.fieldId}
-            numericFormField={numField}
-            disabled={!numField.isFormFieldActive(filledFields)}
+            key={fieldObj.fieldId}
+            numericFormField={fieldObj}
+            disabled={!fieldObj.isFormFieldActive(filledFields)}
             {...commonProps}
           />
         );
       default:
-        const defaultTextField = new TextFormFieldModel(field);
         return (
           <TextFormField
-            key={field.fieldId}
-            textFormField={defaultTextField}
-            disabled={!defaultTextField.isFormFieldActive(filledFields)}
+            key={fieldObj.fieldId}
+            textFormField={fieldObj}
+            disabled={!fieldObj.isFormFieldActive(filledFields)}
             {...commonProps}
           />
         );

@@ -31,10 +31,11 @@ class NumericFormField extends Component {
   }
   handleInputChange = e => {
     const { fieldId, fieldLabel } = this.props.numericFormField;
+    const value = e.target.value;
     const selectedField = {
       fieldId: fieldId,
       fieldLabel: fieldLabel,
-      value: e.target.value
+      value: value ? parseInt(e.target.value) : null
     };
     this.props.onChange(selectedField);
     if (!e.target.value) {

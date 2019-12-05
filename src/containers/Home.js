@@ -15,7 +15,6 @@ class Home extends Component {
     return (
       <div className="home" data-test="home">
         <Container>
-          {this.state.showSubmittedAlert && this.renderSubmittedAlert()}
           <h1 className="heading mb-2" data-test="header">
             DyForms
           </h1>
@@ -24,12 +23,13 @@ class Home extends Component {
             onFormSubmit={this.onFormSubmit}
             style={{ textAlign: "left", maxWidth: 500, margin: "0 auto" }}
           />
+          {this.state.showSubmittedAlert && this.renderSubmittedAlert()}
         </Container>
       </div>
     );
   }
   renderSubmittedAlert = () => {
-    return <Alert color="secondary">{"Your form is submitted, please check the browser console for  details"}</Alert>;
+    return <Alert color="success">{"Your form is submitted, please check the browser console for  details"}</Alert>;
   };
   getModelledFormFields = () => {
     return formFields.map(field => {

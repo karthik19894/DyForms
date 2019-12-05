@@ -64,7 +64,7 @@ const fields = [
   {
     fieldId: cancelledReason,
     type: Types.ENUM,
-    value: [],
+    value: "",
     fieldLabel: "Cancelled Reason",
     placeholder: "",
     required: false,
