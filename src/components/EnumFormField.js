@@ -8,15 +8,15 @@ class EnumFormField extends Component {
     fieldValues: this.props.enumFormField.value
   };
   render() {
-    const { enumFormField, disabled } = this.props;
-    const { fieldLabel, fieldId, className, required, placeholder, multiple } = enumFormField;
+    const { enumFormField, disabled, className } = this.props;
+    const { fieldLabel, fieldId, required, placeholder, multiple } = enumFormField;
     const options = enumFormField.getOptionsForSelect();
     const requiredCls = required ? "required" : "";
     const optionsWithDefaultEmpty = options.length > 0 ? [{ value: "", label: "None" }, ...options] : [];
     const optionsToRender = multiple ? options : optionsWithDefaultEmpty;
     const onChange = multiple ? this.handleMultipleInputsChange : this.handleInputChange;
     return (
-      <FormGroup className={`form-field ${className} ${requiredCls}`} data-test="form-field">
+      <FormGroup className={`form-field enum-form-field ${className} ${requiredCls}`} data-test="enum-form-field">
         <Label className="control-label" for={fieldId}>
           {fieldLabel}
         </Label>
@@ -39,7 +39,7 @@ class EnumFormField extends Component {
   }
   renderOptionsList = options => {
     return options.map(option => (
-      <option key={option.value} value={option.value}>
+      <option key={option.value} value={option.value} data-test="option">
         {option.label}
       </option>
     ));

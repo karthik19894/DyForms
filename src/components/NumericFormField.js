@@ -9,7 +9,7 @@ class NumericFormField extends Component {
     const requiredCls = numericFormField.required ? "required" : "";
     const { type, fieldId, fieldLabel, required, disabled, placeholder, value, minValue, maxValue } = numericFormField;
     return (
-      <FormGroup className={`form-field ${className} ${requiredCls}`} data-test="form-field">
+      <FormGroup className={`form-field numeric-form-field ${className} ${requiredCls}`} data-test="numeric-form-field">
         <Label className="control-label" for={fieldId}>
           {fieldLabel}
         </Label>

@@ -38,7 +38,9 @@ const fields = [
     fieldsToActivate: [],
     oneOfTheFieldsToActivate: [],
     renderWhenNotActive: true,
-    multiple: false
+    multiple: false,
+    minValue: null,
+    maxValue: null
   },
   {
     fieldId: status,

@@ -129,7 +129,8 @@ class DyForm extends Component {
     const { filledFields } = this.state;
     const commonProps = {
       onChange: this.onFormFieldChange,
-      onRemoveField: this.onRemoveField
+      onRemoveField: this.onRemoveField,
+      "data-test": "form-field"
     };
     const fieldObj = FormFieldModelCreator(field);
     switch (fieldObj.type) {
@@ -149,6 +150,7 @@ class DyForm extends Component {
             enumFormField={fieldObj}
             disabled={!fieldObj.isFormFieldActive(filledFields)}
             {...commonProps}
+            data-test="enum-form-field"
           />
         );
       case Types.NUMBER:

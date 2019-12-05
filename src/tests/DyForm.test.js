@@ -3,11 +3,11 @@ import { shallow } from "../enzyme";
 import { findByTestAttr } from "./testutils/utils";
 import DyForm from "../components/DyForm";
 import { fields } from "./testutils/mockformfields";
-import FormFieldModel from "../models/FormFieldModel";
-import FormField from "../components/FormField";
-
-const formFields = fields.map(f => new FormFieldModel(f));
+import Types from "../enums/Types";
+import { FormFieldModelCreator } from "../models/ModelCreator";
+const formFields = fields.map(f => FormFieldModelCreator(f));
 const wrapper = shallow(<DyForm className="dyform-test" formFields={formFields} />);
+const fieldRenderer = wrapper.instance().getFormFieldRendererBasedOnType;
 
 describe("DyForm rendering", () => {
   it("should render the dy form with container", () => {
@@ -15,7 +15,7 @@ describe("DyForm rendering", () => {
   });
 
   it("should render list of FormFields equal to the length of inputs passed", () => {
-    expect(wrapper.find(FormField)).toHaveLength(formFields.length);
+    expect(findByTestAttr(wrapper, "form-field")).toHaveLength(formFields.length);
   });
 
   it("should accept the className passed as prop", () => {
@@ -38,12 +38,12 @@ fieldToFilter.renderWhenNotActive = false;
 let filteredWrapper = shallow(<DyForm formFields={filterTestFields} />);
 describe("FormFields filtering", () => {
   it("should not render the fields which are not active", () => {
-    expect(filteredWrapper.find(FormField)).toHaveLength(formFields.length - 1);
+    expect(findByTestAttr(filteredWrapper, "form-field")).toHaveLength(formFields.length - 1);
   });
   fieldToFilter.renderWhenNotActive = true;
   let nonFilteredWrapper = shallow(<DyForm formFields={filterTestFields} />);
   it("should render the non active fields when the prop renderWhenNotActive set to true", () => {
-    expect(nonFilteredWrapper.find(FormField)).toHaveLength(formFields.length);
+    expect(findByTestAttr(nonFilteredWrapper, "form-field")).toHaveLength(formFields.length);
   });
 });
 
@@ -59,5 +59,23 @@ describe("Form Submit Validations", () => {
   it("should allow form submission when all required fields are filled", () => {
     const submittableButton = findByTestAttr(submissionWrapper, "submit-btn");
     expect(submittableButton.prop("disabled")).toBeFalsy();
+  });
+});
+
+describe("Form Field Renderer Validations", () => {
+  it("should render with TextFormField when type is text", () => {
+    const renderer = fieldRenderer({ fieldId: "1", type: Types.TEXT });
+    const wrapper = shallow(renderer);
+    expect(wrapper.first().hasClass("text-form-field")).toBeTruthy();
+  });
+  it("should render with EnumFormField when type is enum", () => {
+    const renderer = fieldRenderer({ fieldId: "1", type: Types.ENUM });
+    const wrapper = shallow(renderer);
+    expect(wrapper.first().hasClass("enum-form-field")).toBeTruthy();
+  });
+  it("should render with NumberFormField when type is text", () => {
+    const renderer = fieldRenderer({ fieldId: "1", type: Types.NUMBER });
+    const wrapper = shallow(renderer);
+    expect(wrapper.first().hasClass("numeric-form-field")).toBeTruthy();
   });
 });

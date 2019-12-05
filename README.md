@@ -1,68 +1,44 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Please follow the following instructions to run the DyForms App.
 
-## Available Scripts
+1. After extracting the contents of the zip folder, make sure you have latest stable version of node and npm installed.
+2. In the command line run "npm i" to install all the packages required as part of the project.
+3. After running the above the app can be run by the following command "npm start", which serves your app in http://localhost:3000 by default.
+4. To run the tests, use the command "npm test".
 
-In the project directory, you can run:
+The instructions for the dynamic form fields to be configured are as follows:
 
-### `npm start`
+The config is formatted as a json or javascript object.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+To configure the form fields navigate to src/config/fields.js
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+now the example json structure and instructions for configuring the fields are as follows:
 
-### `npm test`
+TEXT FIELD:
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+    fieldId: "name",    //The fieldId column can take string or integer values which has to be unique
+    type: "text", //The types for now can take three values as defined in the enum file Types.js under src/enums/Types
+    fieldLabel: "Name", //The Name can be any string
+    placeholder: "Enter your name here", //The placeholder can be any string
+    required: false, //This field will determine whether the field has to be filled in order to allow submission of the form
+    fieldsToActivate: [], // This field can take an array of objects with "fieldId" and "value" as props, These objects in the array will make the defined field active
+                                only upon filling all the fields defined under this property.
+    oneOfTheFieldsToActivate: [],// This field can take an array of objects with "fieldId" and "value" as props, These objects in the array will make the defined field active
+                                    only upon  filling one of all the fields defined under this property.
+    renderWhenNotActive: true //This field takes a boolean and will determine whether the field is displayed to the user when the field is not active, this is set to true by                               default.
 
-### `npm run build`
+    There are two other Field types NUMBER and ENUM
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+    which has additional properties including the above.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+NUMBER FIELD:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+    minValue:1 //Restricts the minimum value set to the value defined under this property, here its 1.
+    maxValue:10 //Restricts the maximum value set to the value defined under this property, here its 10.
 
-### `npm run eject`
+ENUM FIELD:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+    options:[{optionId:1,optionLabel:"one"}] // This field takes a list of objects with props "optionId" which will be the value or identifier for the option and
+                                                label will be the text that is rendered to the user.
+    value:[] //Here the value will be an array of identifiers.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+    multiple:false //this bool field will allow multiple values in the enum.

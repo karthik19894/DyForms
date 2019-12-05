@@ -5,11 +5,11 @@ import TextFormFieldModel from "../models/TextFormFieldModel";
 
 class TextFormField extends Component {
   render() {
-    const { textFormField, disabled } = this.props;
-    const { fieldLabel, fieldId, className, required, value, placeholder, type } = textFormField;
+    const { className, textFormField, disabled } = this.props;
+    const { fieldLabel, fieldId, required, value, placeholder, type } = textFormField;
     const requiredCls = required ? "required" : "";
     return (
-      <FormGroup className={`form-field ${className} ${requiredCls}`} data-test="form-field">
+      <FormGroup className={`form-field text-form-field ${className} ${requiredCls}`} data-test="text-form-field">
         <Label className="control-label" for={fieldId}>
           {fieldLabel}
         </Label>
