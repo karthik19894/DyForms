@@ -2,7 +2,20 @@ import identifiers from "./identifiers";
 import { Status as StatusEnum } from "../enums/Status";
 import { CancelledReason as CancelledReasonEnum } from "../enums/CancelledReason";
 import Types from "../enums/Types";
-const { createdBy, description, severity, status, cancelledReason, cancelledOthersDescription, comments } = identifiers;
+import CriticalReason from "../enums/CriticalReason";
+import Conditionals from "../enums/Conditionals";
+const {
+  createdBy,
+  description,
+  severity,
+  status,
+  cancelledReason,
+  cancelledOthersDescription,
+  comments,
+  criticalReason,
+  normalComment,
+  cancelledSeverity
+} = identifiers;
 const fields = [
   {
     fieldId: createdBy,
@@ -125,6 +138,118 @@ const fields = [
     oneOfTheFieldsToActivate: [],
     renderWhenNotActive: true,
     multiple: false
+  },
+  {
+    fieldId: criticalReason,
+    type: Types.ENUM,
+    fieldLabel: "Critical Reason",
+    placeholder: "",
+    required: false,
+    fieldsToActivate: [
+      {
+        fieldId: severity,
+        conditional: Conditionals.GREATER_THAN_OR_EQUAL_TO,
+        value: 100
+      }
+    ],
+    options: [
+      {
+        optionId: CriticalReason.REASON_1,
+        optionLabel: "REASON 1"
+      },
+      {
+        optionId: CriticalReason.REASON_2,
+        optionLabel: "REASON 2"
+      },
+      {
+        optionId: CriticalReason.REASON_3,
+        optionLabel: "REASON 3"
+      }
+    ],
+    renderWhenNotActive: false
+  },
+  {
+    fieldId: normalComment,
+    type: Types.TEXT,
+    fieldLabel: "Normal Comment",
+    placeholder: "",
+    required: false,
+    fieldsToActivate: [
+      {
+        fieldId: severity,
+        conditional: Conditionals.LESS_THAN,
+        value: 100
+      }
+    ],
+    renderWhenNotActive: false
+  },
+  {
+    fieldId: cancelledSeverity,
+    type: Types.TEXT,
+    fieldLabel: "Cancelled Severity",
+    placeholder: "",
+    required: false,
+    fieldsToActivate: [
+      {
+        fieldId: severity,
+        conditional: Conditionals.LESS_THAN,
+        value: 100,
+        conditionalId: 1,
+        overallConditionalType: "AND",
+        overallConditionalMandatory: true,
+        isMandatory: false
+      },
+      {
+        fieldId: status,
+        value: StatusEnum.CANCELLED,
+        conditionalId: 1,
+        isMandatory: false
+      },
+      {
+        fieldId: status,
+        value: StatusEnum.COMPLETED,
+        conditionalId: 2,
+        isMandatory: true
+      },
+      {
+        fieldId: severity,
+        conditional: Conditionals.EQUALS,
+        value: 200,
+        conditionalId: 2,
+        isMandatory: true
+      }
+    ],
+    conditions: [
+      [
+        {
+          fieldId: severity,
+          value: 200
+        },
+        "OR",
+        {
+          fieldId: status,
+          value: StatusEnum.COMPLETED
+        }
+      ],
+      "AND",
+      [
+        {
+          fieldId: severity,
+          value: 200
+        },
+        "OR",
+        {
+          fieldId: status,
+          value: StatusEnum.COMPLETED
+        }
+      ],
+      "OR",
+      []
+    ],
+    oneOfTheFieldsToActivate: [],
+    renderWhenNotActive: false,
+    considerBothConditionals: false,
+    isMultiConditional: true
   }
 ];
 
