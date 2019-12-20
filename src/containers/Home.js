@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Container, Alert } from "reactstrap";
 import DyForm from "../components/DyForm";
 import formFields from "../config/fields";
-import FormFieldModel from "../models/FormFieldModel";
 
 class Home extends Component {
   constructor(props) {
@@ -30,11 +29,6 @@ class Home extends Component {
   }
   renderSubmittedAlert = () => {
     return <Alert color="success">{"Your form is submitted, please check the browser console for  details"}</Alert>;
-  };
-  getModelledFormFields = () => {
-    return formFields.map(field => {
-      return new FormFieldModel(field);
-    });
   };
   onFormSubmit = filledFields => {
     this.setState({

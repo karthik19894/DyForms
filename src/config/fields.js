@@ -24,8 +24,7 @@ const fields = [
     placeholder: "",
     value: "karthik",
     required: true,
-    fieldsToActivate: [],
-    oneOfTheFieldsToActivate: [],
+    conditions: [],
     renderWhenNotActive: true,
     multiple: false
   },
@@ -36,8 +35,7 @@ const fields = [
     placeholder: "",
     value: "",
     required: false,
-    fieldsToActivate: [],
-    oneOfTheFieldsToActivate: [],
+    conditions: [],
     renderWhenNotActive: true,
     multiple: false
   },
@@ -48,8 +46,7 @@ const fields = [
     placeholder: "",
     value: null,
     required: false,
-    fieldsToActivate: [],
-    oneOfTheFieldsToActivate: [],
+    conditions: [],
     renderWhenNotActive: true,
     multiple: false,
     minValue: null,
@@ -71,8 +68,7 @@ const fields = [
         optionLabel: "COMPLETED"
       }
     ],
-    fieldsToActivate: [],
-    oneOfTheFieldsToActivate: [],
+    conditions: [],
     renderWhenNotActive: true,
     multiple: false
   },
@@ -83,13 +79,12 @@ const fields = [
     fieldLabel: "Cancelled Reason",
     placeholder: "",
     required: false,
-    fieldsToActivate: [
+    conditions: [
       {
         fieldId: status,
         value: StatusEnum.CANCELLED
       }
     ],
-    oneOfTheFieldsToActivate: [],
     options: [
       {
         optionId: CancelledReasonEnum.OTHERS,
@@ -109,11 +104,12 @@ const fields = [
     fieldLabel: "Cancelled Others Description",
     placeholder: "",
     required: false,
-    fieldsToActivate: [
+    conditions: [
       {
         fieldId: status,
         value: StatusEnum.CANCELLED
       },
+      "AND",
       {
         fieldId: cancelledReason,
         value: CancelledReasonEnum.OTHERS
@@ -129,13 +125,12 @@ const fields = [
     fieldLabel: "Comments",
     placeholder: "",
     required: false,
-    fieldsToActivate: [
+    conditions: [
       {
         fieldId: status,
         value: StatusEnum.COMPLETED
       }
     ],
-    oneOfTheFieldsToActivate: [],
     renderWhenNotActive: true,
     multiple: false
   },
@@ -145,7 +140,7 @@ const fields = [
     fieldLabel: "Critical Reason",
     placeholder: "",
     required: false,
-    fieldsToActivate: [
+    conditions: [
       {
         fieldId: severity,
         conditional: Conditionals.GREATER_THAN_OR_EQUAL_TO,
@@ -174,7 +169,7 @@ const fields = [
     fieldLabel: "Normal Comment",
     placeholder: "",
     required: false,
-    fieldsToActivate: [
+    conditions: [
       {
         fieldId: severity,
         conditional: Conditionals.LESS_THAN,
@@ -189,36 +184,6 @@ const fields = [
     fieldLabel: "Cancelled Severity",
     placeholder: "",
     required: false,
-    fieldsToActivate: [
-      {
-        fieldId: severity,
-        conditional: Conditionals.LESS_THAN,
-        value: 100,
-        conditionalId: 1,
-        overallConditionalType: "AND",
-        overallConditionalMandatory: true,
-        isMandatory: false
-      },
-      {
-        fieldId: status,
-        value: StatusEnum.CANCELLED,
-        conditionalId: 1,
-        isMandatory: false
-      },
-      {
-        fieldId: status,
-        value: StatusEnum.COMPLETED,
-        conditionalId: 2,
-        isMandatory: true
-      },
-      {
-        fieldId: severity,
-        conditional: Conditionals.EQUALS,
-        value: 200,
-        conditionalId: 2,
-        isMandatory: true
-      }
-    ],
     conditions: [
       [
         {
@@ -229,24 +194,22 @@ const fields = [
         {
           fieldId: status,
           value: StatusEnum.COMPLETED
-        }
-      ],
-      "AND",
-      [
-        {
-          fieldId: severity,
-          value: 200
         },
-        "OR",
-        {
-          fieldId: status,
-          value: StatusEnum.COMPLETED
-        }
-      ],
-      "OR",
-      []
+        "AND",
+        [
+          {
+            fieldId: severity,
+            value: 100,
+            conditional: Conditionals.LESS_THAN
+          },
+          "OR",
+          {
+            fieldId: status,
+            value: StatusEnum.CANCELLED
+          }
+        ]
+      ]
     ],
-    oneOfTheFieldsToActivate: [],
     renderWhenNotActive: false,
     considerBothConditionals: false,
     isMultiConditional: true
