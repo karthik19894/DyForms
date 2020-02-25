@@ -70,8 +70,8 @@ which has additional properties including the above.
 ### Number Field:
 
 ```javascript 
-minValue:1 //Restricts the minimum value set to the value defined under this property, here its 1.
-maxValue:10 //Restricts the maximum value set to the value defined under this property, here its 10.
+minValue:1 //Restricts the minimum value.
+maxValue:10 //Restricts the maximum value.
 ```
 ### Enum Field:
 
