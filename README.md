@@ -39,12 +39,14 @@ which has additional properties including the above.
 
 ### NUMBER FIELD:
 
-minValue:1 //Restricts the minimum value set to the value defined under this property, here its 1.maxValue:10 //Restricts the maximum value set to the value defined under this property, here its 10.
-
+```javascript 
+minValue:1 //Restricts the minimum value set to the value defined under this property, here its 1.
+maxValue:10 //Restricts the maximum value set to the value defined under this property, here its 10.
+```
 ### ENUM FIELD:
 
-    options:[{optionId:1,optionLabel:"one"}] // This field takes a list of objects with props "optionId" which will be the value or identifier for the option and
-                                                label will be the text that is rendered to the user.
-    value:[] //Here the value will be an array of identifiers.
-
-    multiple:false //this bool field will allow multiple values in the enum.
+```javascript
+options:[{optionId:1,optionLabel:"one"}] // This field takes a list of objects with props "optionId" which will be the value or identifier for the option and label will be the text that is rendered to the user.
+value:[] //Here the value will be an array of identifiers.
+multiple:false //this bool field will allow multiple values in the enum.
+```
