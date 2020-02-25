@@ -115,7 +115,6 @@ const fields = [
         value: CancelledReasonEnum.OTHERS
       }
     ],
-    oneOfTheFieldsToActivate: [],
     renderWhenNotActive: true,
     multiple: false
   },
@@ -210,9 +209,7 @@ const fields = [
         ]
       ]
     ],
-    renderWhenNotActive: false,
-    considerBothConditionals: false,
-    isMultiConditional: true
+    renderWhenNotActive: false
   }
 ];
 
