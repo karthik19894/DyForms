@@ -46,6 +46,23 @@ conditions:[
 
 In the above conditional object, the property conditional is by default set to equals, however in case of numeric fields, we could use other conditionals like "GREATER_THAN", "LESS_THAN", "GREATER_THAN_OR_EQUAL_TO" AND "LESS_THAN_OR_EQUAL_TO".
 
+We could also use conditional operators like 'OR' and 'AND' and add conditions as we need like below:
+
+```javascript
+conditions:[
+    {
+        fieldId:"Priority",
+        value:1,
+        conditional:Conditionals.EQUALS
+    },
+    'OR',
+    {
+        fieldId:"isHighPriority",
+        value:true
+    }
+]
+```
+
 There are two other Field types NUMBER and ENUM
 
 which has additional properties including the above.
@@ -59,7 +76,12 @@ maxValue:10 //Restricts the maximum value set to the value defined under this pr
 ### Enum Field:
 
 ```javascript
-options:[{optionId:1,optionLabel:"one"}] // This field takes a list of objects with props "optionId" which will be the value or identifier for the option and label will be the text that is rendered to the user.
+options:[
+    {
+        optionId:1,
+        optionLabel:"one"
+    }
+] // This field takes a list of objects with props "optionId" which will be the value or identifier for the option and label will be the text that is rendered to the user.
 value:[] //Here the value will be an array of identifiers.
 multiple:false //this bool field will allow multiple values in the enum.
 ```
